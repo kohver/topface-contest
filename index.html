@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>TopFace</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="/css/all.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/all.js"></script>
+    <script type="text/javascript">
+        var chat = new Chat(
+            {
+                viewer: {id: 100, name: 'Юлия'},
+                contacts:
+                [
+                    {id: 1, name: 'Артем', photo: 'http://cs10308.vk.com/u4718705/e_be62b8f2.jpg', online: true, counter: 1},
+                    {id: 2, name: 'Семен', photo: 'http://cs9719.userapi.com/u08182/e_a08ffde6.jpg', online: true, counter: 25},
+                    {id: 3, name: 'Алена', photo: 'http://cs5629.vk.com/u15043123/e_883075be.jpg', counter: 0, online: true},
+                    {id: 4, name: 'Станислав', photo: 'http://cs10368.vk.com/u23646334/e_35d34209.jpg', counter: 312},
+                    {id: 6, name: 'Александра', photo: 'http://cs10226.vk.com/u97017358/e_a6cf0ab9.jpg', counter: 6},
+                    {id: 7, name: 'Станислав', photo: 'http://cs10368.vk.com/u23646334/e_35d34209.jpg'},
+                    {id: 8, name: 'Станислав', photo: 'http://cs10368.vk.com/u23646334/e_35d34209.jpg'},
+                    {id: 9, name: 'Александра', photo: 'http://cs10226.vk.com/u97017358/e_a6cf0ab9.jpg', online: true}
+                ]
+            }
+        );
+        chat.init(1);
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="left-column"></div>
+      <div id="right-column"></div>
+    </div>
+  </body>
+</html>

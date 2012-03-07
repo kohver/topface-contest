@@ -1,0 +1,167 @@
+
+<!--UI_TEMPLATE-->
+<script type="text/html" id="UI_CONTACT_LIST">
+  <div id="contact-list">
+    <? if (isset("contacts")) { ?>
+      <? each("UI_CONTACT", contacts); ?>
+    <? } else { ?>
+      <div>Contact list is empty</div>
+    <? } ?>
+  </div>
+</script>
+
+<script type="text/html" id="UI_CONTACT">
+  <div onclick="chat.showContact(<?=id?>)" id="contact<?=id?>" class="contact">
+    <span class="<?=isset("online") ? "online" : "offline"?>"></span>
+    <span class="name"><?=name?></span>
+    <? if (isset("counter")) { ?>
+      <div class="counter"><?=counter?></div>
+    <? } ?>
+    <div class="close" onclick="chat.hideContact(<?=id?>)"></div>
+    <div class="photo"><img src="<?=photo?>" alt="" /></div>
+  </div>
+</script>
+
+<script type="text/html" id="UI_USER_INFO">
+  <div id="user-info">
+    <div class="wrapper">
+      <div class="photo"><img src="<?=photo?>" alt="" /></div>
+      <div class="summary">
+        <div class="name"><a href="#"><?=name?></a></div>
+        <div class="city"><?=city?></div>
+      </div>
+      <div class="actions">
+        <div class="action"><span class="link">Добавить в контакты</span></div>
+        <div class="action"><span class="link">Пожаловаться</span></div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="UI_DIALOG">
+  <div id="dialog">
+    <div id="messages">
+      <? if (isset("messages")) { ?>
+        <? each("UI_MESSAGE", messages); ?>
+      <? } else { ?>
+        <div class="hint">
+          <div><h1>Начни с интересной фразы</h1></div>
+          <div>Произведи хорошее впечатление!</div>
+          <div><span class="link" onclick="chat.sendMessage('text', $('#message-example').html())">«<span id="message-example">Чертовски привлекательный!</span>»</span></div>
+          <div class="change-example"><span class="icon"></span><span class="link" onclick="chat.changeMessageExample()">Другой комплимент</span></div>
+        </div>
+        <div class="empty">Напиши первое сообщение</div>
+      <? } ?>
+    </div>
+    <div id="compose">
+      <div class="wrapper">
+        <div class="hint"></div>
+        <div class="textarea">
+          <textarea placeholder="Введите текст сообщения..." id="message-text" onkeydown="if ((event.ctrlKey || event.metaKey) && event.keyCode == 13) chat.sendMessage('text')"></textarea>
+        </div>
+        <div class="actions">
+          <span class="action">
+            <span class="button" onclick="chat.sendMessage('text')" title="Ctrl+Enter">Отправить</span>
+          </span>
+          <span class="action">
+            <span class="icon gift"></span>
+            <span class="link" onclick="chat.showPopup('gift')">Отправить подарок</span>
+          </span>
+          <span class="action">
+            <span class="icon star"></span>
+            <span class="link" onclick="chat.showPopup('rate')">Отправить оценку</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="UI_MESSAGE">
+  <div class="message" id="message<?=id?>">
+    <div class="username <? if (isset("isViewer")) print("viewer"); ?>"><?=username?></div>
+    <div class="content">
+      <? if (isset("text")) { ?>
+        <div class="text"><?=text?></div>
+      <? } ?>
+      <? if (isset("rate")) print(tmpl("UI_MESSAGE_RATE", {rate: rate})); ?>
+      <? if (isset("gift")) print(tmpl("UI_MESSAGE_GIFT", {gift: gift})); ?>
+    </div>
+    <div class="delete" onclick="chat.showPopup('message delete', {id:'<?=id?>'})"></div>
+    <div class="date"><?=date?></div>
+  </div>
+</script>
+
+<script type="text/html" id="UI_MESSAGE_RATE">
+  <div class="rate">
+    <? if (rate < 9) { ?>
+      <span class="star"><?=rate?></span> Вас оценили. <span class="link" onclick="chat.showPopup('rate')">Оценить в ответ</span>
+    <? } else if (rate < 10) { ?>
+      <span class="attach"><img src="/img/heart.png" alt="" /> </span> Ты понравился. <span class="link" onclick="chat.showPopup('rate')">Отправить взаимную симпатию</span>
+    <? } else { ?>
+      <span class="attach"><img src="/img/heart2.png" alt="" /> </span> У вас взаимная симпатия! <span class="link" onclick="chat.showPopup('gift')">Подарок — лучший способ продолжить отношения</span>
+    <? } ?>
+  </div>
+</script>
+
+<script type="text/html" id="UI_MESSAGE_GIFT">
+  <div class="gift">
+    <span class="attach"><img src="/img/gift<?=gift?>.png" alt="" /></span> Вам отправили подарок. <span class="link" onclick="chat.showPopup('gift')">Отправить подарок в ответ</span>
+  </div>
+</script>
+
+<script type="text/html" id="UI_MESSAGE_DELETED">
+  <div class="system">Сообщение было удалено.</div>
+</script>
+
+<script type="text/html" id="UI_POPUP">
+  <div id="background" onclick="chat.hidePopup()"></div>
+  <div id="popup"></div>
+</script>
+
+<script type="text/html" id="UI_POPUP_MESSAGE_DELETE">
+  <div class="close" onclick="chat.hidePopup()"></div>
+  <div class="content">
+    <div>Вы действительно хотите удалить сообщение?</div>
+    <? if (isset("text")) { ?>
+      <div class="quote">«<span><?=text?></span>»</div>
+    <? } ?>
+  </div>
+  <div class="actions">
+    <div class="action">
+      <div class="button" onclick="chat.deleteMessage(<?=id?>)">Удалить</div>
+    </div>
+    <div class="action"><span class="link-gray" onclick="chat.hidePopup()">Нет, не надо удалять</span></div>
+  </div>
+</script>
+
+<script type="text/html" id="UI_POPUP_GIFTS">
+  <div class="close" onclick="chat.hidePopup()"></div>
+  <div class="content">
+    <? each("UI_POPUP_GIFT", gifts); ?>
+  </div>
+</script>
+
+<script type="text/html" id="UI_POPUP_GIFT">
+  <span class="link" onclick="chat.sendMessage('gift', <?=id?>)"><?=id?></span>
+</script>
+
+<script type="text/html" id="UI_POPUP_RATE">
+  <div class="close" onclick="chat.hidePopup()"></div>
+  <div class="content">
+    Отправьте <?=username?>у оценку
+    <div class="stars clearFix">
+      <div class="star">1</div>
+      <div class="star">2</div>
+      <div class="star">3</div>
+      <div class="star">4</div>
+      <div class="star">5</div>
+      <div class="star">6</div>
+      <div class="star">7</div>
+      <div class="star">8</div>
+      <div class="star">9</div>
+      <div class="star">10</div>
+    </div>
+  </div>
+</script>
+<!--UI_TEMPLATE-->
