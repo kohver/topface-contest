@@ -1,5 +1,11 @@
 <?php
 
+/*
+*  Artyom Kohver
+*  http://vk.com/itema  
+*  © 2012
+*/
+
 //sleep(1);
 $request = $_POST ? $_POST : $_GET;
 $url = explode('/', urldecode($_SERVER['QUERY_STRING']), 4);
@@ -103,5 +109,6 @@ if ($url[1] == 'ajax')
       <div id="left-column"></div>
       <div id="right-column"></div>
     </div>
+<!-- Yandex.Metrika counter --><div style="display:none;"><script type="text/javascript">(function(w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter13011487 = new Ya.Metrika({id:13011487, enableAll: true, ut:"noindex", webvisor:true}); } catch(e) { } }); })(window, "yandex_metrika_callbacks");</script></div><script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script><noscript><div><img src="//mc.yandex.ru/watch/13011487?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter --> 
   </body>
 </html>

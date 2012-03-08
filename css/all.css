@@ -556,11 +556,55 @@ a:hover, .link:hover {
   white-space: nowrap;
   vertical-align: bottom;
 }
+#popup .title {
+  padding: 10px;
+  font-size: 22px;
+}
 #popup .content {
   padding: 15px;
 }
+#popup .section {
+  position: relative;
+  overflow: hidden;
+}
+#popup .section-title {
+  border-bottom: 1px solid #DDD;
+  line-height: 3px;
+  height: 3px;
+  margin: 10px 0 15px;
+}
+#popup .section-title b {
+  background-color: #FFF;
+  font-size: 12px;
+  padding: 0 10px;
+}
+#popup .section .gifts {
+  overflow: hidden;
+  white-space: nowrap;
+}
+#popup .section .right-arrow {
+  position: absolute;
+  right: 0px;
+  top: 40px;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  background: #999 url("/img/right-arrow.png") no-repeat center;
+  opacity: .5;
+  filter: alpha(opacity=50);
+  cursor: pointer;
+  -moz-transition: all 0.1s ease;
+  -webkit-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+}
+#popup .section .right-arrow:hover {
+  opacity: .7;
+  filter: alpha(opacity=750);
+}
 #popup .gift {
   cursor: pointer;
+  display: inline-block;
+  padding: 10px;
 }
 #popup .stars {
   width: 350px;

@@ -1,3 +1,9 @@
+/*
+*  Artyom Kohver
+*  http://vk.com/itema  
+*  © 2012
+*/
+
 function Chat(params)
 {
     var viewer = params.viewer;
@@ -196,8 +202,14 @@ function Chat(params)
                 popup.html(tmpl(UI_POPUP_MESSAGE_DELETE, params));
             break;
             case 'gift':
-                params.gifts = [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}];
-                popup.html(tmpl(UI_POPUP_GIFTS, params));
+                params.sections =
+                [
+                    {purchase: 2, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]},
+                    {purchase: 6, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]},
+                    {purchase: 12, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]},
+                    {purchase: 1, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]}
+                ]
+                popup.css({width: 635, marginLeft: -215}).html(tmpl(UI_POPUP_GIFTS, params));
             break;
             case 'rate':
                 params.username = declension(selectedUser.name);
@@ -238,7 +250,7 @@ function Chat(params)
     
     function hidePopup()
     {
-        $('#popup').hide();
+        $("#popup").removeAttr("style").hide();
         $('#background').hide();
     }
     
@@ -504,7 +516,19 @@ UI_POPUP_MESSAGE_DELETE =
 UI_POPUP_GIFTS =
 '<div class="close" onclick="chat.hidePopup()"></div>' +
 '<div class="content">' +
-  '<? each(UI_POPUP_GIFT, gifts); ?>' +
+  '<div class="title">Подарки</div>' +
+  '<? each(UI_POPUP_GIFTS_SECTION, sections); ?>' +
+'</div>';
+
+UI_POPUP_GIFTS_SECTION =
+'<div class="section">' +
+  '<div class="section-title"><b>Подарки за <?=purchase?></b></div>' +
+  '<div class="gifts">' +
+    '<? each(UI_POPUP_GIFT, gifts); ?>' +
+  '</div>' +
+  '<? if (gifts.length > 8) { ?>' +
+    '<div class="right-arrow" onclick="var el = $(this).parent().find(\'.gifts\'); el.animate({marginLeft: -el.width()}); $(this).fadeOut(200)"></div>' +
+  '<? } ?>' +
 '</div>';
     
 UI_POPUP_GIFT =
