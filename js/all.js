@@ -209,7 +209,7 @@ function Chat(params)
                     {purchase: 12, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]},
                     {purchase: 1, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]}
                 ]
-                popup.css({width: 635, marginLeft: -215}).html(tmpl(UI_POPUP_GIFTS, params));
+                popup.css({width: 635, marginLeft: -215, marginTop: -50}).html(tmpl(UI_POPUP_GIFTS, params));
             break;
             case 'rate':
                 params.username = declension(selectedUser.name);
@@ -379,16 +379,14 @@ UI_CONTACT =
     
 UI_USER_INFO =
 '<div id="user-info">' +
-  '<div class="wrapper">' +
-    '<div class="photo"><img src="<?=photo?>" alt="" /></div>' +
-    '<div class="summary">' +
-      '<div class="name"><a href="/"><?=name?>, <?=age?></a></div>' +
-      '<div class="city"><?=city?></div>' +
-    '</div>' +
-    '<div class="actions">' +
-      '<div class="action"><span class="link">Добавить в контакты</span></div>' +
-      '<div class="action"><span class="link">Пожаловаться</span></div>' +
-    '</div>' +
+  '<div class="photo"><img src="<?=photo?>" alt="" /></div>' +
+  '<div class="summary">' +
+    '<div class="name"><a href="/"><?=name?>, <?=age?></a></div>' +
+    '<div class="city"><?=city?></div>' +
+  '</div>' +
+  '<div class="actions">' +
+    '<div class="action"><span class="link">Добавить в контакты</span></div>' +
+    '<div class="action"><span class="link">Пожаловаться</span></div>' +
   '</div>' +
 '</div>';
     
@@ -408,27 +406,25 @@ UI_DIALOG =
     '<? } ?>' +
   '</div>' +
   '<div id="compose">' +
-    '<div class="wrapper">' +
-      '<div class="hint"></div>' +
-      '<div class="textarea">' +
-        '<textarea placeholder="Введите текст сообщения..." id="message-text" onkeydown="if ((event.ctrlKey || event.metaKey) && event.keyCode == 13) chat.sendMessage(\'text\')"></textarea>' +
-      '</div>' +
-      '<div class="actions">' +
-        '<span class="action">' +
-          '<span class="button" onclick="chat.sendMessage(\'text\')" title="Ctrl+Enter">Отправить</span>' +
-        '</span>' +
-        '<span class="action">' +
-          '<span class="icon gift"></span>' +
-          '<span class="link" onclick="chat.showPopup(\'gift\')">Отправить подарок</span>' +
-        '</span>' +
-        '<span class="action">' +
-          '<span class="icon star"></span>' +
-          '<span class="link" onclick="chat.showPopup(\'rate\')">Отправить оценку</span>' +
-        '</span>' +
-        '<span class="action pin">' +
-          '<span class="link" onclick="var el = $(\'#compose\'), cls = \'compose-no-fixed\'; el.hasClass(cls) ? (el.removeClass(cls), this.innerHTML = \'Открепить\') : (el.addClass(cls), this.innerHTML = \'Закрепить\')">Открепить</span>' +
-        '</span>' +
-      '</div>' +
+    '<div class="hint"></div>' +
+    '<div class="textarea">' +
+      '<textarea placeholder="Введите текст сообщения..." id="message-text" onkeydown="if ((event.ctrlKey || event.metaKey) && event.keyCode == 13) chat.sendMessage(\'text\')"></textarea>' +
+    '</div>' +
+    '<div class="actions">' +
+      '<span class="action">' +
+        '<span class="button" onclick="chat.sendMessage(\'text\')" title="Ctrl+Enter">Отправить</span>' +
+      '</span>' +
+      '<span class="action">' +
+        '<span class="icon gift"></span>' +
+        '<span class="link" onclick="chat.showPopup(\'gift\')">Отправить подарок</span>' +
+      '</span>' +
+      '<span class="action">' +
+        '<span class="icon star"></span>' +
+        '<span class="link" onclick="chat.showPopup(\'rate\')">Отправить оценку</span>' +
+      '</span>' +
+      '<span class="action pin">' +
+        '<span class="link" onclick="var el = $(\'#compose\'), cls = \'compose-no-fixed\'; el.hasClass(cls) ? (el.removeClass(cls), this.innerHTML = \'Открепить\') : (el.addClass(cls), this.innerHTML = \'Закрепить\')">Открепить</span>' +
+      '</span>' +
     '</div>' +
   '</div>' +
 '</div>';
@@ -515,14 +511,14 @@ UI_POPUP_MESSAGE_DELETE =
     
 UI_POPUP_GIFTS =
 '<div class="close" onclick="chat.hidePopup()"></div>' +
+'<div class="title">Подарки</div>' +
 '<div class="content">' +
-  '<div class="title">Подарки</div>' +
   '<? each(UI_POPUP_GIFTS_SECTION, sections); ?>' +
 '</div>';
 
 UI_POPUP_GIFTS_SECTION =
 '<div class="section">' +
-  '<div class="section-title"><b>Подарки за <?=purchase?></b></div>' +
+  '<div class="title"><b>Подарки за <?=purchase?></b></div>' +
   '<div class="gifts">' +
     '<? each(UI_POPUP_GIFT, gifts); ?>' +
   '</div>' +
