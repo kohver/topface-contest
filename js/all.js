@@ -209,7 +209,7 @@ function Chat(params)
                     {purchase: 12, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]},
                     {purchase: 1, gifts: [{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1},{id: 1}]}
                 ]
-                popup.css({width: 635, marginLeft: -215, marginTop: -50}).html(tmpl(UI_POPUP_GIFTS, params));
+                popup.css({width: 630, marginLeft: -210, marginTop: -50}).html(tmpl(UI_POPUP_GIFTS, params));
             break;
             case 'rate':
                 params.username = declension(selectedUser.name);
@@ -319,9 +319,53 @@ function Chat(params)
     };
 };
 
-(function() {
+var giftBox = (function()
+{
+    function slideRight(el, event)
+    {
+        var slider = $(el).parent().find('.gifts');
+        var margin = parseInt(slider.css('marginLeft')) - slider.parent().width();
+        slider.animate({marginLeft: margin});
+        if (margin < 0)
+        {
+            $(el).parent().append('<div class="left-arrow" onclick="giftBox.slideLeft(this, event)"></div>');
+            $(el).fadeOut(200, function(e) {$(el).remove()});
+        }
+    }
+    
+    function slideLeft(el, event)
+    {
+        var slider = $(el).parent().find('.gifts');
+        var margin = parseInt(slider.css('marginLeft')) + slider.parent().width();
+        slider.animate({marginLeft: margin});
+        if (margin >= 0)
+        {
+            $(el).parent().append('<div class="right-arrow" onclick="giftBox.slideRight(this, event)"></div>');
+            $(el).fadeOut(200, function(e) {$(el).remove()});
+        }
+    }
+    
+    return {
+        slideRight: slideRight,
+        slideLeft: slideLeft
+    };
+})();
+
+var tmpl = (function() {
     var cache = {};
-    this.tmpl = function tmpl(str, data) {
+    var format = function(str)
+    {
+        return str
+            .replace(/[\r\t\n]/g, ' ')
+            .split("<?").join("\t")
+            .split("'").join("\\'")
+            .replace(/\t=(.*?)\?>/g, "',$1,'")
+            .split("\t").join("');")
+            .split("?>").join("p.push('")
+            .split("\r").join("\\'");
+    }
+    var tmpl = function(str, data)
+    {
         try {
             var fn = (!/[^\w-]/.test(str))
             ? (cache[str] = cache[str] || tmpl($('#' + str).html()))
@@ -330,31 +374,15 @@ function Chat(params)
                 'print=function(){p.push.apply(p,arguments)},' +
                 'isset=function(v){return obj[v] ? true : false},' +
                 'each=function(ui,obj){for(var i=0; i<obj.length; i++) { print(tmpl(ui, $.extend(obj[i],{i:i}))) }};' +
-                "with(obj){p.push('" + str
-                .replace(/[\r\t\n]/g, ' ')
-                .split("<?").join("\t")
-                .split("'").join("\\'")
-                .replace(/\t=(.*?)\?>/g, "',$1,'")
-                .split("\t").join("');")
-                .split("?>").join("p.push('")
-                .split("\r").join("\\'")
-                + "');} return p.join('');"
+                "with(obj){p.push('" + format(str) + "');} return p.join('');"
             ));
             return data ? fn(data) : fn;
         } catch(e) {
-            console.log("p.push('" + str
-                .replace(/[\r\t\n]/g, ' ')
-                .split("<?").join("\t")
-                .split("'").join("\\'")
-                .replace(/\t=(.*?)\?>/g, "',$1,'")
-                .split("\t").join("');")
-                .split("?>").join("p.push('")
-                .split("\r").join("\\'")
-                + "');} return p.join('');"
-            + "')");
+            console.log(format(str));
             throw e;
         };
     };
+    return tmpl;
 })();
 
 UI_CONTACT_LIST =
@@ -522,8 +550,8 @@ UI_POPUP_GIFTS_SECTION =
   '<div class="gifts">' +
     '<? each(UI_POPUP_GIFT, gifts); ?>' +
   '</div>' +
-  '<? if (gifts.length > 8) { ?>' +
-    '<div class="right-arrow" onclick="var el = $(this).parent().find(\'.gifts\'); el.animate({marginLeft: -el.width()}); $(this).fadeOut(200)"></div>' +
+  '<? if (gifts.length > 6) { ?>' +
+    '<div class="right-arrow" onclick="giftBox.slideRight(this, event)"></div>' +
   '<? } ?>' +
 '</div>';
     
